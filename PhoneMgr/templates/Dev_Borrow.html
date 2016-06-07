@@ -1,0 +1,38 @@
+<html>
+<head>
+<script src="/static/myjs/zDialog.js"></script>
+<script type="text/javascript">
+function open3(myurl,mytitle)
+{
+	var diag = new Dialog();
+	diag.Width = 500;
+	diag.Height = 300;
+	if (!mytitle)
+		diag.Title = "提示信息";
+	else
+		diag.Title = mytitle;
+	diag.URL = myurl;
+	diag.show();
+}
+</script>
+<title>借出设备</title>
+</head>
+<body>
+	<p style='color: red'>
+		{{ op_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		将分配给你的：{{ form.PhoneName}}，借给
+		
+		{{ form.BorrowMan.errors }}
+			<label for='id_BorrowMan'>TA:</label>
+		{{ form.BorrowMan}}							
+
+		<input type='button' value='新加一个用户' onClick="open3('/UserMgr/Add','添加新用户')">
+		<input type='button' value='刷新' onClick="window.location.reload();"><br>		
+		<input type='submit' value='确定借给TA'>
+		<input type='hidden' name='p_id' value={{ p_id }}>
+	</form>
+</body>
+</html>

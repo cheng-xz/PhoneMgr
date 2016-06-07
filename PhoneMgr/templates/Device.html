@@ -1,0 +1,136 @@
+{%extends "base.html"%}
+ 
+ {% load pagination_tags tptg %}
+ 
+{%block title%}设备信息{%endblock%}
+
+{%block myjs%}
+<script type='text/javascript'>
+function setIndex()
+{
+var qstatus = "";
+
+{% if messages %}
+	{% for message in messages %}
+		qstatus = {{message}};
+	{% endfor%}
+{% endif%}
+
+
+if(qstatus != "")
+{
+	setSelectIndex(qstatus);	
+	//$('#device_status1').empty();
+}
+}
+
+function setSelectIndex(optionValue)
+{
+	for(var i=0;i<$('#device_status1 option').length;i++)
+	{
+		if($('#device_status1').get(0).options[i].value == optionValue)
+		{
+			$('#device_status1').get(0).options[i].selected = true;
+			break;
+		}
+	}
+}
+window.onload = setIndex;
+</script>
+
+{%endblock%}
+
+
+
+{%block content%}
+		<form action='/DeviceMaintain' method='post'>
+			{% csrf_token %}
+				<select name='device_status' id="device_status1">
+					<option value="13">全部设备</option>
+					<option value="11">设备可借</option>
+					<option value="12">设备不可借</option>
+				</select>
+				<input type='input' name='search' value="搜索…" onFocus="this.value=''">			
+				
+			<input type='submit' value='查询'>
+			<!--input type='button' value='增加' onClick="window.open('/DeviceMaintain/Add')"-->
+			{% if perms.PhoneMgr.DeviceMaintain_AddNewDevice%}
+				<input type='button' value='增加' onClick="open3('/DeviceMaintain/Add','添加新设备')">
+			{% endif %}
+		</form>
+		查询结果如下，共 <font style='color:red'>{{ PhoneInfoResult|mytotal }} </font>条：
+		<table width='100%' id="" cellspacing="0" class="display">
+			<thead>
+			<tr>
+				<th>id</th>
+				<th>手机名称</th>
+				<th>厂商</th>
+				<th>OS</th>
+				<th>OS版本号</th>
+				<th>主屏尺寸</th>
+				<th>分辨率</th>
+				<th>内存</th>
+				<th>CPU型号</th>
+				<th>CPU核心数</th>
+				<th>当前归属人</th>
+				<th>当前状态</th>
+				<th>操作列</th>
+			</tr>
+			</thead>
+			{% autopaginate PhoneInfoResult 10 %}
+			<tbody>
+			{% for PhoneInfoItem in PhoneInfoResult %}
+			<tr>
+				<td>{{ PhoneInfoItem.id }}</td>
+				<td>{{ PhoneInfoItem.PhoneName }}</td>
+				<td>{{ PhoneInfoItem.ProductInfo.ProductName }}</td>
+				<td>{{ PhoneInfoItem.OsInfo.OsName }}</td>
+				<td>{{ PhoneInfoItem.OsVersionInfo.OsVersionName }}</td>
+				<td>{{ PhoneInfoItem.ScreenSizeInfo.ScreenSizeName }}</td>
+				<td>{{ PhoneInfoItem.ResolutionInfo.ResolutionName }}</td>
+				<td>{{ PhoneInfoItem.MemoryInfo.MemorySize }}</td>
+				<td>{{ PhoneInfoItem.CpuType }}</td>
+				<td>{{ PhoneInfoItem.CpuCoreNum }}</td>
+				<td>{{ PhoneInfoItem.Owner }}</td>
+				<!--td><script>document.write(getLocalTime({{ PhoneInfoItem.UpdateDate }}))</script></td-->
+				<td>
+					<script>document.write(convertStatus({{ PhoneInfoItem.CurrState }}))</script>
+					{% if PhoneInfoItem.CurrState == 12 %}
+						{{ PhoneInfoItem.BorrowMan }}
+					{% endif %}
+				</td>
+				<td><!--a href='/DeviceMaintain/Mod?id={{ PhoneInfoItem.id }}' target='_blank'>修改</a-->
+				{% if perms.PhoneMgr.DeviceMaintain_UpdateDeviceState %}
+					<a href='#' onClick="open3('/DeviceMaintain/Mod?id={{ PhoneInfoItem.id }}','修改设备信息')">修改</a>&nbsp
+				{% endif %}
+				{% if perms.PhoneMgr.DeviceMaintain_AddNewDevice %}
+					<a href='/DeviceMaintain/Del?id={{ PhoneInfoItem.id }}' onClick="return confirm('确定删除?')">删除</a>&nbsp
+				{% endif %}
+				{% if perms.PhoneMgr.DeviceMaintain_AssignDevice%}
+					{% if PhoneInfoItem.Owner %}
+						<a href='/DeviceMaintain/UnAssign?id={{ PhoneInfoItem.id }}' onClick="return confirm('确定取消分配?')">取消分配</a>&nbsp
+					{% else %}
+						<a href='#' onClick="open3('/DeviceMaintain/Assign?id={{ PhoneInfoItem.id }}','分配一台设备')">分配</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.DeviceMaintain_BorrowDevice or  PhoneInfoItem.Owner == user  %}
+					{% if PhoneInfoItem.CurrState == 11 %}
+						<a href='#' onClick="open3('/DeviceMaintain/Borrow?id={{ PhoneInfoItem.id }}','借取一台设备')">借出</a>&nbsp
+					{% else %}	
+						<a href='/DeviceMaintain/Back?id={{ PhoneInfoItem.id }}'onClick="return confirm('确定归还?')")>归还</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.DeviceMaintain_AskBackDevice or  PhoneInfoItem.Owner == user  %}
+					{% if  PhoneInfoItem.CurrState == 12 %}
+					<a href='/DeviceMaintain/AskBack?id={{ PhoneInfoItem.id }}' onClick="return confirm('将发送催还邮件?')" >催机</a>
+					{% endif %}
+				{% endif %}		
+				</td>
+			<tr>
+			{% endfor %}
+			</tbody>
+			{% paginate %}
+		</table>
+{%endblock%}
+
+

@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>修改设备信息</title>
+<link rel="stylesheet" type="text/css" href="../../static/css/mystyle.css" />
+</head>
+<body>
+	<p style='color: red'>
+		{{ PhoneInfo_mod_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		{{ form.PhoneName.errors }}
+			<label for='id_PhoneName'>手机名称:</label>
+		{{ form.PhoneName}}<br>
+		
+		{{ form.ProductInfo.errors }}
+			<label for='id_ProductInfo'>手机厂商:</label>
+		{{ form.ProductInfo}}	<br>		
+				
+		{{ form.OsInfo.errors }}
+			<label for='id_OsInfo'>OS:</label>
+		{{ form.OsInfo}}		<br>
+		
+		{{ form.OsVersionInfo.errors }}
+			<label for='id_OsVersionInfo'>OS版本:</label>
+		{{ form.OsVersionInfo}}		<br>	
+
+		{{ form.CpuType.errors }}
+			<label for='id_CpuType'>CPU型号:</label>
+		{{ form.CpuType}}	<br>	
+
+		{{ form.CpuCoreNum.errors }}
+			<label for='id_CpuCoreNum'>CPU核心数:</label>
+		{{ form.CpuCoreNum}}			<br>	
+		
+		{{ form.ResolutionInfo.errors }}
+			<label for='id_ResolutionInfo'>分辨率:</label>
+		{{ form.ResolutionInfo}}		<br>
+		
+		{{ form.ScreenSizeInfo.errors }}
+			<label for='id_ScreenSizeInfo'>尺寸:</label>
+		{{ form.ScreenSizeInfo}}	<br>	
+
+		{{ form.MemoryInfo.errors }}
+			<label for='id_MemoryInfo'>内存:</label>
+		{{ form.MemoryInfo}}		<br>			
+		
+		{{ form.IMEI.errors }}
+			<label for='id_IMEI'>IMEI:</label>
+		{{ form.IMEI}}<br>		
+		
+		{{ form.FundId.errors }}
+			<label for='id_FundId'>资产编号:</label>
+		{{ form.FundId}}<br>				
+
+		{{ form.HealthState.errors }}
+			<label for='id_HealthState'>健康状况:</label>
+		{{ form.HealthState}}		<br>
+		
+		{{ form.IfTel.errors }}
+			<label for='id_IfTel'>是否电信机:</label>
+		{{ form.IfTel}}	<br>				
+			
+		{{ form.About.errors }}
+			<label for='id_About'>备注:</label>
+		{{ form.About}}			<br><br><br>
+						
+		<input type='submit' value='修改'>
+		<input type='hidden' name='p_id' value={{ p_id }}>
+	</form>
+</body>
+</html>

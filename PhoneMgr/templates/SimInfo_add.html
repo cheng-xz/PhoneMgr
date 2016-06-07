@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>添加SIM卡</title>
+<link rel="stylesheet" type="text/css" href="/static/css/mystyle.css" />
+{%block myjs%}
+<script type="text/javascript">
+function checkData()
+{
+	var phonenum = document.getElementById('id_PhoneNum');
+	
+	if (phonenum.value == ""){
+		alert("卡号码不能为空");
+		return false;
+	}
+	
+}
+</script>
+{%endblock%}
+</head>
+<body>
+	<p style='color: red'>
+		{{ SimInfo_add_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		{{ form.PhoneNum.errors }}
+			<label for='id_PhoneNum'>SIM卡号码:</label>
+		{{ form.PhoneNum}}<font style='color:red'>*</font><br>
+		
+		{{ form.ProvinceInfo.errors }}
+			<label for='id_ProvinceInfo'>归属省份:</label>
+		{{ form.ProvinceInfo}}			<br>
+
+		{{ form.CarrierInfo.errors }}
+			<label for='id_CarrierInfo'>所属运营商:</label>
+		{{ form.CarrierInfo}}	<br>
+				
+		{{ form.IMSI.errors }}
+			<label for='id_IMSI'>IMSI：</label>
+		{{ form.IMSI}}		<br>
+
+		{{ form.ServerPass.errors }}
+			<label for='id_ServerPass'>服务密码：</label>
+		{{ form.ServerPass}}		<br>		
+		
+		{{ form.SimWhiteList.errors }}
+			<label for='id_SimWhiteList'>白名单信息：</label>
+		{{ form.SimWhiteList}}		<br>			
+
+		{{ form.SimAbout.errors }}
+			<label for='id_SimAbout'>备注:</label>
+				{{ form.SimAbout }}<br>				
+
+		{{ form.CurrOwner.errors }}
+			<label for='id_CurrOwner'>CurrOwner：</label>
+		{{ form.CurrOwner}}			<br>
+	
+		<br><br>
+		<input type='submit' value='添加' onclick="return checkData()">
+	</form>
+</body>
+</html>

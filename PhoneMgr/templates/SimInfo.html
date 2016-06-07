@@ -1,0 +1,98 @@
+{%extends "base.html"%}
+
+ {% load pagination_tags tptg %}
+
+{%block title%}SIM卡信息{%endblock%}
+
+{%block content%}
+		{% if form.errors %}
+			<p style='color:red'>
+				检查一下输入项
+			</p>
+		{% endif %}
+		<form action='/SimInfo' method='post'>
+			{% csrf_token %}
+				{{ form.PhoneNum.errors }}
+				<label for='id_PhoneNum'>手机号码:</label>
+				{{ form.PhoneNum}}
+				
+				{{ form.CarrierInfo.errors }}
+				<label for='id_CarrierInfo'>运营商:</label>
+				{{ form.CarrierInfo}}		
+
+				{{ form.SimWhiteList.errors }}
+				<label for='id_SimWhiteList'>白名单:</label>
+				{{ form.SimWhiteList}}						
+				
+			<input type='submit' value='查询'>
+			{% if perms.PhoneMgr.SimMaintain_AddNewSim%}
+				<input type='button' value='增加' onClick="open3('/SimInfo/Add','添加新sim卡')">
+			{% endif %}
+		</form>
+		查询结果如下，共 <font style='color:red'>{{ SimInfoResult|mytotal }} </font>条：
+		<table width='100%' id="" cellspacing="0" class="display">
+			<thead>
+			<tr>
+				<th>id</th>
+				<th>手机号码</th>
+				<th>归属省份</th>				
+				<th>运营商</th>
+				<th>归属人</th>
+				<th>服务密码</th>
+				<th>白名单信息</th>
+				<th>备注</th>
+				<th>当前状态</th>
+				<th>操作列</th>
+			</tr>
+			</thead>
+			{% autopaginate SimInfoResult 20 %}
+			<tbody>
+			{% for SimInfoItem in SimInfoResult %}
+			<tr>
+				<td>{{ SimInfoItem.id }}</td>
+				<td>{{ SimInfoItem.PhoneNum }}</td>
+				<td>{{ SimInfoItem.Province.ProvinceName }}</td>				
+				<td>{{ SimInfoItem.Carrier.CarrierName}}</td>
+				<td>{{ SimInfoItem.CurrOwner }}</td>
+				<td>{{ SimInfoItem.ServerPass }}</td>
+				<td>{{ SimInfoItem.SimWhiteList.ListDesc }}</td>
+				<td>{{ SimInfoItem.SimAbout }}</td>
+				<td>
+					<script>document.write(convertStatus({{ SimInfoItem.CurrState }}))</script>
+					{% if SimInfoItem.CurrState == 12 %}
+						{{ SimInfoItem.BorrowMan }}
+					{% endif %}
+				</td>				
+				<td>
+				{% if perms.PhoneMgr.SimMaintain_UpdateSimInfo %}
+					<a href='#' onClick="open3('/SimInfo/Mod?id={{ SimInfoItem.id }}','修改sim卡')">修改</a>&nbsp
+				{% endif %}
+				{% if perms.PhoneMgr.SimMaintain_AddNewSim %}
+					<a href='/SimInfo/Del?id={{ SimInfoItem.id }}' onClick="return confirm('确定删除?')">删除</a>&nbsp
+				{% endif %}
+				{% if perms.PhoneMgr.SimMaintain_AssignSim %}
+					{% if SimInfoItem.CurrOwner %}
+						<a href='/SimInfo/UnAssign?id={{ SimInfoItem.id }}' onClick="return confirm('确定取消分配?')">取消分配</a>&nbsp
+					{% else %}
+						<a href='#' onClick="open3('/SimInfo/Assign?id={{ SimInfoItem.id }}','分配一张SIM卡')">分配</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.SimMaintain_BorrowSim  or  SimInfoItem.CurrOwner == user %}
+					{% if SimInfoItem.CurrState == 11 %}
+						<a href='#' onClick="open3('/SimInfo/Borrow?id={{ SimInfoItem.id }}','借取SIM卡')">借出</a>&nbsp
+					{% else %}
+						<a href='/SimInfo/Back?id={{ SimInfoItem.id }}'onClick="return confirm('确定归还?')")>归还</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.SimMaintain_AskBackSim  or  SimInfoItem.CurrOwner == user  %}
+					{% if  SimInfoItem.CurrState == 12 %}
+						<a href='/SimInfo/AskBack?id={{ SimInfoItem.id }}' onClick="return confirm('将发送催还邮件?')" >催还</a>
+					{% endif %}
+				{% endif %}			
+				</td>
+			<tr>
+			{% endfor %}
+			</tbody>
+			{% paginate %}
+		</table>
+{%endblock%}

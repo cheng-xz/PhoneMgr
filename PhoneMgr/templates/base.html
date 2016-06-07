@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>{%block title%}{%endblock%}</title>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+{% load tptg %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css">
+
+	<style type="text/css" class="init">
+
+	div.dataTables_wrapper {
+		margin-bottom: 3em;
+	}
+
+	</style>
+
+{%block script%}
+<script src="/static/myjs/common.js"></script>
+<script src="/static/myjs/zDialog.js"></script>
+<script src="/static/myjs/picdata/WdatePicker.js"></script>
+<script src="/static/myjs/jquery.js"></script>
+<script src="/static/myjs/jquery.layout.js"></script>
+<script src="/static/myjs/jquery.dataTables.js"></script>
+{%endblock%}
+
+{%block myjs%}
+{%endblock%}
+
+<script type="text/javascript">
+function open3(myurl,mytitle)
+{
+	var diag = new Dialog();
+	diag.Width = 700;
+	diag.Height = 400;
+	if (!mytitle)
+		diag.Title = "提示信息";
+	else
+		diag.Title = mytitle;
+	diag.URL = myurl;
+	diag.show();
+}
+</script>
+
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("body").layout({ applyDemoStyles: true });
+	});
+	</script>
+	
+ 	<script type="text/javascript" language="javascript" class="init">
+$('document').ready(function() {
+	$('table.display').dataTable({
+	"paging":   false,
+	"ordering": false,
+	"info":     false,
+	"searching":false,
+	"columns": [
+        ]
+	});			
+} );
+	</script>
+
+	
+</head>
+<body>
+{% if user.is_authenticated %}
+<div class="ui-layout-north">
+	<table width='100%'>
+		<tr>
+			<td align='left' style='color:red;font-family:微软雅黑' >测试机管理系统</td>
+			<td>
+				{% block mymessage%}{% endblock %}
+			</td>
+			<td align='right'>欢迎您，<a href="/PasswordMan">{{ user.username}}</a> <a href='/mylogout/'>退出</a></td>
+		</tr>
+	</table>	
+</div>
+{% else %}
+<div align='right'>请先登录</div>
+{% endif %}
+
+<div class="ui-layout-center">{%block content%}{%endblock%}
+</div>
+
+<div class="ui-layout-south" align='right'>
+Designed by 成协主(<a href='mailto:chengxiezhu@126.com'>@sutton.cheng</a>) <a href='/static/img/pay.png' target='_blank'>Donate</a>
+</div>
+
+<div class="ui-layout-west">
+		<ul>
+			{% for Menu_Item in MainMenu%}
+				{% if  user.username == "admin" or Menu_Item.AuthMenuId.codename|addModule in user.get_all_permissions  %}
+					<li><a href='{{  Menu_Item.MenuLink}}'>{{ Menu_Item.MenuName}}</a></li>
+				{% endif %}
+			{% endfor%}
+		</ul>
+</div>
+
+</body>
+</html>

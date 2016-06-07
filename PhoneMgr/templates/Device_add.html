@@ -1,0 +1,111 @@
+<html>
+<head>
+<title>添加设备</title>
+<link rel="stylesheet" type="text/css" href="/static/css/mystyle.css" />
+{%block myjs%}
+<script type="text/javascript">
+function checkData()
+{
+	var phonename = document.getElementById('id_PhoneName');
+	var osinfo = document.getElementById('id_OsInfo');
+	var osver = document.getElementById('id_OsVersionInfo');
+	
+	var osinfo_text = osinfo.options[osinfo.selectedIndex].text;
+	var osver_text = osver.options[osver.selectedIndex].text;	
+	
+	if (phonename.value == ""){
+		alert("手机名不能为空");
+		return false;
+	}
+
+	if (osver_text.indexOf(osinfo_text) == -1){
+		alert("OS版本和OS不匹配，请重新选择");
+		return false;
+	}
+	
+}
+</script>
+{%endblock%}
+</head>
+<body>
+	<p style='color: red'>
+		{{ PhoneInfo_add_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		{{ form.PhoneName.errors }}
+			<label for='id_PhoneName'>手机名称:</label>
+		{{ form.PhoneName}}<font style='color:red'>*</font><br>
+		
+		{{ form.ProductInfo.errors }}
+			<label for='id_ProductInfo'>手机厂商:</label>
+		{{ form.ProductInfo}}<br>			
+		<!--
+		{{ form.ModelInfo.errors }}
+			<label for='id_ModelInfo'>手机型号:</label>
+		{{ form.ModelInfo}}	-->
+				
+		{{ form.OsInfo.errors }}
+			<label for='id_OsInfo'>OS:</label>
+		{{ form.OsInfo}}		<br>
+		
+		{{ form.OsVersionInfo.errors }}
+			<label for='id_OsVersionInfo'>OS版本:</label>
+		{{ form.OsVersionInfo}}		<br>	
+
+		{{ form.CpuType.errors }}
+			<label for='id_CpuType'>CPU型号:</label>
+		{{ form.CpuType}}		<br>
+
+		{{ form.CpuCoreNum.errors }}
+			<label for='id_CpuCoreNum'>CPU核心数:</label>
+		{{ form.CpuCoreNum}}				<br>
+		
+		{{ form.ResolutionInfo.errors }}
+			<label for='id_ResolutionInfo'>分辨率:</label>
+		{{ form.ResolutionInfo}}	<br>	
+		
+		{{ form.ScreenSizeInfo.errors }}
+			<label for='id_ScreenSizeInfo'>尺寸:</label>
+		{{ form.ScreenSizeInfo}}		<br>
+		
+		{{ form.MemoryInfo.errors }}
+			<label for='id_MemoryInfo'>内存:</label>
+		{{ form.MemoryInfo}}		<br>		
+		
+		{{ form.IfTel.errors }}
+			<label for='id_IfTel'>是否电信机:</label>
+		{{ form.IfTel}}			<br>	
+
+		{{ form.IMEI.errors }}
+			<label for='id_IMEI'>IMEI:</label>
+		{{ form.IMEI}}		<br>
+
+		{{ form.Owner.errors }}
+			<label for='id_Owner'>分配给:</label>
+		{{ form.Owner}}		<br>
+
+		{{ form.FundId.errors }}
+			<label for='id_FundId'>公司资产编号:</label>
+		{{ form.FundId}}<br>				
+
+		{{ form.About.errors }}
+			<label for='id_About'>备注:</label>
+		{{ form.About}}			<br>
+
+			<br><br>
+		
+		<input type='submit' value='添加' onclick="return checkData()">
+	</form>
+</body>
+<script type="text/javascript">
+var osinfo = document.getElementById("id_OsInfo");
+osinfo.addEventListener("change",changeProc,false);
+
+function changeProc(e)
+{
+	//alert(osinfo.value);
+	
+}
+</script>
+</html>

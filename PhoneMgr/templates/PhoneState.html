@@ -1,0 +1,54 @@
+{%extends "base.html"%}
+
+{%block title%}手机状态{%endblock%}
+
+{%block content%}
+		{% if form.errors %}
+			<p style='color:red'>
+				检查一下输入项
+			</p>
+		{% endif %}
+		<form action='' method='post'>
+			{% csrf_token %}
+				{{ form.PhoneName.errors }}
+				<label for='id_PhoneName'>手机名称:</label>
+				<!--{{ form.PhoneName}}-->
+				<input id="id_PhoneName" disabled = "readonly" maxlength="50" name="PhoneName" type="text" value="" />
+				{{ form.CurrState.errors }}
+				<label for='id_CurrState'>当前状态:</label>
+				{{ form.CurrState}}					
+				
+			<input type='submit' value='查询'>
+		</form>
+		查询结果如下：
+		<table width='100%' border='1'>
+			<tr>
+				<th>id</th>
+				<th>手机名称</th>
+				<th>当前状态</th>
+				<th>借出人</th>
+				<th>借出时间</th>
+				<th>借出确定人</th>
+				<th>归还人</th>
+				<th>归还时间</th>
+				<th>归还确定人</th>
+				<th>操作项</th>
+			</tr>
+			{% for PhoneStateItem in PhoneStateResult %}
+			<tr>
+				<td>{{ PhoneStateItem.id }}</td>
+				<td>{{ PhoneStateItem.PhoneInfo.PhoneName}}</td>
+				<td><script>document.write(convertStatus({{ PhoneStateItem.CurrState }}))</script></td>
+				<td>{% if  PhoneStateItem.BorrowMan != None%}{{ PhoneStateItem.BorrowMan }}{% endif %}</td>
+				<td><script>document.write(getLocalTime({{ PhoneStateItem.BorrowDate }}))</script></td>
+				<td>{% if  PhoneStateItem.BorrowAuthMan != None%}{{ PhoneStateItem.BorrowAuthMan }}{% endif %}</td>
+				<td>{% if  PhoneStateItem.BackMan != None%}{{ PhoneStateItem.BackMan }}{% endif %}</td>
+				<td><script>document.write(getLocalTime({{ PhoneStateItem.BackDate }}))</script></td>
+				<td>{% if  PhoneStateItem.BackAuthMan != None%}{{ PhoneStateItem.BackAuthMan }}{% endif %}</td>
+				<td><a href='/PhoneState/Borrow?id={{ PhoneStateItem.id }}' target='_blank' style='display:1' onclick='return borrowLink({{ PhoneStateItem.CurrState }});'>借出</a>&nbsp
+				<a href='/PhoneState/Back?id={{ PhoneStateItem.id }}' target='_blank' onclick='return backLink({{ PhoneStateItem.CurrState }});'>归还</a>&nbsp
+				<a href='/PhoneState/AskBack?id={{ PhoneStateItem.id }}' target='_blank' onclick='return backLink({{ PhoneStateItem.CurrState }});'>催还</a></td>
+			<tr>
+			{% endfor %}
+		</table>
+{%endblock%}

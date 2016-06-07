@@ -1,0 +1,112 @@
+{%extends "base.html"%}
+ 
+ {% load tptg %}
+ 
+{%block title%}我的设备信息{%endblock%}
+
+{%block content%}
+<section>
+		设备列表如下，共 <font style='color:red'>{{ PhoneInfoResult|mytotal }} </font>条：
+		<table id="" class="" cellspacing="0" width="100%" border="1">
+			<tr>
+				<th>id</th>
+				<th>手机名称</th>
+				<th>厂商</th>
+				<th>OS</th>
+				<th>OS版本号</th>
+				<th>主屏尺寸</th>
+				<th>分辨率</th>
+				<th>内存</th>
+				<th>CPU型号</th>
+				<th>CPU核心数</th>
+				<th>当前归属人</th>
+				<th>当前状态</th>
+				<th>操作列</th>
+			</tr>
+			
+			{% for PhoneInfoItem in PhoneInfoResult %}
+			<tr>
+				<td>{{ PhoneInfoItem.id }}</td>
+				<td>{{ PhoneInfoItem.PhoneName }}</td>
+				<td>{{ PhoneInfoItem.ProductInfo.ProductName }}</td>
+				<td>{{ PhoneInfoItem.OsInfo.OsName }}</td>
+				<td>{{ PhoneInfoItem.OsVersionInfo.OsVersionName }}</td>
+				<td>{{ PhoneInfoItem.ScreenSizeInfo.ScreenSizeName }}</td>
+				<td>{{ PhoneInfoItem.ResolutionInfo.ResolutionName }}</td>
+				<td>{{ PhoneInfoItem.MemoryInfo.MemorySize }}</td>
+				<td>{{ PhoneInfoItem.CpuType }}</td>
+				<td>{{ PhoneInfoItem.CpuCoreNum }}</td>
+				<td>{{ PhoneInfoItem.Owner }}</td>
+				<!--td><script>document.write(getLocalTime({{ PhoneInfoItem.UpdateDate }}))</script></td-->
+				<td>
+					<script>document.write(convertStatus({{ PhoneInfoItem.CurrState }}))</script>
+					{% if PhoneInfoItem.CurrState == 12 %}
+						{{ PhoneInfoItem.BorrowMan }}
+					{% endif %}
+				</td>
+				<td><!--a href='/MyDevice/Mod?id={{ PhoneInfoItem.id }}' target='_blank'>修改</a-->
+				{% if perms.PhoneMgr.DeviceMaintain_BorrowDevice or  PhoneInfoItem.Owner == user  %}
+					{% if PhoneInfoItem.CurrState == 11 %}
+						<a href='#' onClick="open3('/MyDevice/Borrow?id={{ PhoneInfoItem.id }}','借取一台设备')">借出</a>&nbsp
+					{% else %}	
+						<a href='/MyDevice/Back?id={{ PhoneInfoItem.id }}'onClick="return confirm('确定归还?')")>归还</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.DeviceMaintain_AskBackDevice or  PhoneInfoItem.Owner == user  %}
+					{% if  PhoneInfoItem.CurrState == 12 %}
+					<a href='/MyDevice/AskBack?id={{ PhoneInfoItem.id }}' onClick="return confirm('将发送催还邮件?')" >催机</a>
+					{% endif %}
+				{% endif %}		
+				</td>
+			<tr>
+			{% endfor %}
+		</table>
+		
+		<br><br>SIM卡列表如下，共 <font style='color:red'>{{ SimInfoResult|mytotal }} </font>条：
+		<table id="" class="" cellspacing="0" width="100%" border="1">
+			<tr>
+				<th>id</th>
+				<th>手机号码</th>
+				<th>归属省份</th>				
+				<th>运营商</th>
+				<th>归属人</th>
+				<th>服务密码</th>
+				<th>备注</th>
+				<th>当前状态</th>				
+				<th>操作列</th>	
+			</tr>
+			
+			{% for SimInfoItem in SimInfoResult %}
+			<tr>
+				<td>{{ SimInfoItem.id }}</td>
+				<td>{{ SimInfoItem.PhoneNum }}</td>
+				<td>{{ SimInfoItem.Province.ProvinceName }}</td>				
+				<td>{{ SimInfoItem.Carrier.CarrierName}}</td>
+				<td>{{ SimInfoItem.CurrOwner }}</td>
+				<td>{{ SimInfoItem.ServerPass }}</td>
+				<td>{{ SimInfoItem.SimAbout }}</td>
+				<td>
+					<script>document.write(convertStatus({{ SimInfoItem.CurrState }}))</script>
+					{% if SimInfoItem.CurrState == 12 %}
+						{{ SimInfoItem.BorrowMan }}
+					{% endif %}
+				</td>					
+				<td>
+				{% if perms.PhoneMgr.SimMaintain_BorrowSim  or  SimInfoItem.CurrOwner == user %}
+					{% if SimInfoItem.CurrState == 11 %}
+						<a href='#' onClick="open3('/MySim/Borrow?id={{ SimInfoItem.id }}','借取SIM卡')">借出</a>&nbsp
+					{% else %}
+						<a href='/MySim/Back?id={{ SimInfoItem.id }}'onClick="return confirm('确定归还?')")>归还</a>&nbsp
+					{% endif %}
+				{% endif %}
+				{% if perms.PhoneMgr.SimMaintain_AskBackSim  or  SimInfoItem.CurrOwner == user  %}
+					{% if  SimInfoItem.CurrState == 12 %}
+						<a href='/MySim/AskBack?id={{ SimInfoItem.id }}' onClick="return confirm('将发送催还邮件?')" >催还</a>
+					{% endif %}
+				{% endif %}			
+				</td>
+			<tr>
+			{% endfor %}
+		</table>	
+</section>		
+{%endblock%}

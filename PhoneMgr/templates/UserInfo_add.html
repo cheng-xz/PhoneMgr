@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>添加用户</title>
+<link rel="stylesheet" type="text/css" href="/static/css/mystyle.css" />
+{%block myjs%}
+<script type="text/javascript">
+function checkData()
+{
+	var username = document.getElementById('id_username');
+	var password = document.getElementById('id_passwd');
+	
+	if (username.value == ""){
+		alert("用户名不能为空");
+		return false;
+	}
+	if (password.value == ""){
+		alert("密码不能为空");
+		return false;
+	}
+	
+}
+</script>
+{%endblock%}
+</head>
+<body>
+	<p style='color: red'>
+		{{ UserInfo_add_result }}
+	</p>
+	<form action='' method='post' name='myform'>
+		{% csrf_token %}
+		{{ form.username.errors }}
+			<label for='id_username'>用户名:</label>
+		{{ form.username}}<font style='color:red'>*</font><br>
+		
+		{{ form.EngName.errors }}
+			<label for='id_EngName'>英文名:</label>
+		{{ form.EngName}}<br>
+				
+		{{ form.ChnName.errors }}
+			<label for='id_ChnName'>中文名:</label>
+		{{ form.ChnName}}	<br>	
+		
+		{{ form.Dept.errors }}
+			<label for='id_Dept'>所属部门:</label>
+		{{ form.Dept}}		<br>	
+		
+		{{ form.passwd.errors }}
+			<label for='id_passwd'>密码:</label>
+		{{ form.passwd}}<font style='color:red'>*</font>	<br>	
+		
+		{{ form.email.errors }}
+			<label for='id_email'>email:</label>
+		{{ form.email}}		<br>
+
+		{{ form.Group.errors }}
+			<label for='id_Group'>所属组:</label>
+		{{ form.Group}}	<br>
+		
+		{{ form.UserInfoAbout.errors }}
+			<label for='id_UserInfoAbout'>备注信息:</label>
+		{{ form.UserInfoAbout}}			<br>		
+		<br><br>
+		<input type='submit' onclick="return checkData()"value='添加'>
+	</form>
+</body>
+<script type="text/javascript">
+var user = document.getElementById("id_username");
+user.addEventListener("keyup",emailAuto,false);
+
+function emailAuto(e)
+{
+	var mail = document.getElementById("id_email");
+	var user = document.getElementById("id_username");
+	var  engname = document.getElementById("id_EngName");
+
+	mail.value = user.value + "@idreamsky.com";
+	engname.value = user.value;
+}
+</script>
+</html>

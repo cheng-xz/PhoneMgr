@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>修改用户信息</title>
+<link rel="stylesheet" type="text/css" href="../../static/css/mystyle.css" />
+</head>
+<body>
+	<p style='color: red'>
+		{{ PhoneInfo_mod_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		{{ form.username.errors }}
+			<label for='id_username'>用户名:</label>
+		{{ form.username}}<br>
+		
+		{{ form.EngName.errors }}
+			<label for='id_EngName'>英文名:</label>
+		{{ form.EngName}}<br>
+				
+		{{ form.ChnName.errors }}
+			<label for='id_ChnName'>中文名:</label>
+		{{ form.ChnName}}	<br>	
+		
+		{{ form.Dept.errors }}
+			<label for='id_Dept'>所属部门:</label>
+		{{ form.Dept}}		<br>	
+		
+		{{ form.passwd.errors }}
+			<label for='id_passwd'>密码:</label>
+		{{ form.passwd}}<font color='red'>留空表示不修改</font>		<br>
+		
+		{{ form.email.errors }}
+			<label for='id_email'>email:</label>
+		{{ form.email}}		<br>
+
+		{{ form.Group.errors }}
+			<label for='id_Group'>所属组:</label>
+		{{ form.Group}}	<br>
+		
+		{{ form.UserInfoAbout.errors }}
+			<label for='id_UserInfoAbout'>备注信息:</label>
+		{{ form.UserInfoAbout}}		<br>			
+		<br><br>			
+						
+		<input type='submit' value='修改'>
+		<input type='hidden' name='p_id' value={{ p_id }}>
+	</form>
+</body>
+</html>

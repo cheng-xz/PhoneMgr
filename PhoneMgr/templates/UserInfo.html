@@ -1,0 +1,56 @@
+{%extends "base.html"%}
+
+ {% load pagination_tags tptg %}
+
+ 
+{%block title%}用户信息管理{%endblock%}
+
+
+{%block content%}
+		<form action='/UserMgr' method='post'>
+			{% csrf_token %}
+				<input type='input' name='search' value="搜索…" onFocus="this.value=''">
+			<input type='submit' value='查询'>
+			<input type='button' value='增加' onClick="open3('/UserMgr/Add','添加新用户')">
+		</form>
+		查询结果如下，共 <font style='color:red'>{{ UserInfoResult|mytotal }} </font>条：
+		<table width='100%' id="usermgr" cellspacing="0" class="display">
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>用户名</th>
+					<th>英文名</th>
+					<th>中文名</th>
+					<th>部门</th>
+					<th>权限组</th>
+					<th>email</th>
+					<th>最后登陆时间</>
+					<th>操作列</th>
+				</tr>
+			</thead>
+			
+			{% autopaginate UserInfoResult 20 %}
+			<tbody>
+			{% for UserInfoResultItem in UserInfoResult %}
+			<tr>
+				<td>{{ UserInfoResultItem.id }}</td>
+				<td>{{ UserInfoResultItem.Userid.username }}</td>
+				<td>{{ UserInfoResultItem.EngName }}</td>
+				<td>{{ UserInfoResultItem.ChnName }}</td>
+				<td>{{ UserInfoResultItem.Dept }}</td>
+				<td>{{ UserInfoResultItem.Userid.groups.all.0.name }}</td>
+				<td>{{ UserInfoResultItem.Userid.email }}</td>
+				<!--<td><script>document.write(convertMySQLDate({{ UserInfoResultItem.Userid.last_login }}))</script></td>-->
+				<td>{{ UserInfoResultItem.Userid.last_login  }}</td>
+				<td><a href='#' onClick="open3('/UserMgr/Mod?id={{ UserInfoResultItem.id }}','修改用户信息')">修改</a>&nbsp
+				{%if perms.PhoneMgr.UserMgr_DelUserInfo %}
+					<a href='/UserMgr/Del?id={{ UserInfoResultItem.id }}' onClick="return confirm('删除用户会导致相关的设备和SIM卡删除(确定相关的设备已经解除)，你确定删除?')">删除</a>
+				{% endif %}
+				</td>
+			<tr>
+			{% endfor %}
+			</tbody>
+			{% paginate %}
+			
+		</table>
+{%endblock%}

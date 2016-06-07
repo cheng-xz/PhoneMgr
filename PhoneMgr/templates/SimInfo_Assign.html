@@ -1,0 +1,37 @@
+<html>
+<head>
+<script src="/static/myjs/zDialog.js"></script>
+<script type="text/javascript">
+function open3(myurl,mytitle)
+{
+	var diag = new Dialog();
+	diag.Width = 500;
+	diag.Height = 300;
+	if (!mytitle)
+		diag.Title = "提示信息";
+	else
+		diag.Title = mytitle;
+	diag.URL = myurl;
+	diag.show();
+}
+</script>
+<title>分配SIM</title>
+</head>
+<body>
+	<p style='color: red'>
+		{{ PhoneInfo_assign_result }}
+	</p>
+	<form action='' method='post'>
+		{% csrf_token %}
+		你确定要分配SIM：{{ form.PhoneNum}}，给
+		
+		{{ form.CurrOwner.errors }}
+			<label for='id_CurrOwner'>TA:</label>
+		{{ form.CurrOwner}}							
+		<input type='button' value='新加一个用户' onClick="open3('/UserMgr/Add','添加新用户')">
+		<input type='button' value='刷新' onClick="window.location.reload();"><br>
+		<input type='submit' value='分配给TA'>
+		<input type='hidden' name='p_id' value={{ p_id }}>
+	</form>
+</body>
+</html>

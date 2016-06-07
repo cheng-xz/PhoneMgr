@@ -1,0 +1,11 @@
+<script src="../../static/myjs/zDialog.js"></script>
+<script type="text/javascript">
+function open9(mycontent)
+{
+	if (!mycontent)
+		mycontent = '操作出错'
+	Dialog.alert(mycontent);
+}
+</script>
+
+<script>open9('{{ context }}')</script>

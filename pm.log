@@ -1,0 +1,58 @@
+/usr/local/lib/python2.7/site-packages/pkg_resources.py:1032: UserWarning: /home/mypy/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+  warnings.warn(msg, UserWarning)
+
+/usr/local/lib/python2.7/site-packages/pkg_resources.py:1032: UserWarning: /home/mypy/.python-eggs is writable by group/others and vulnerable to attack when used with get_resource_filename. Consider a more secure location (set with .set_extraction_path or the PYTHON_EGG_CACHE environment variable).
+  warnings.warn(msg, UserWarning)
+
+/usr/local/lib/python2.7/site-packages/pagination/middleware.py:7: RemovedInDjango19Warning: `request.REQUEST` is deprecated, use `request.GET` or `request.POST` instead.
+  return int(self.REQUEST['page'])
+
+/usr/local/lib/python2.7/site-packages/django/core/handlers/wsgi.py:126: RemovedInDjango19Warning: `MergeDict` is deprecated, use `dict.update()` instead.
+  self._request = datastructures.MergeDict(self.POST, self.GET)
+
+[07/Jun/2016 18:16:49]"GET /DeviceMaintain HTTP/1.0" 200 5547
+[07/Jun/2016 18:16:49]"GET /static/css/jquery.dataTables.css HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/common.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/jquery.layout.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/picdata/WdatePicker.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/jquery.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/zDialog.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/jquery.dataTables.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/picdata/skin/WdatePicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:16:49]"GET /static/myjs/picdata/My97DatePicker.htm HTTP/1.0" 304 0
+[07/Jun/2016 18:16:50]"GET /static/myjs/picdata/config.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:50]"GET /static/myjs/picdata/calendar.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:50]"GET /static/myjs/picdata/lang/zh-cn.js HTTP/1.0" 304 0
+[07/Jun/2016 18:16:50]"GET /static/myjs/picdata/skin/default/datepicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:16:50]"GET /static/myjs/picdata/skin/whyGreen/datepicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:09]"GET /mylogout/ HTTP/1.0" 302 0
+[07/Jun/2016 18:20:09]"GET /accounts/login?next=/ HTTP/1.0" 301 0
+[07/Jun/2016 18:20:09]"GET /accounts/login/?next=/ HTTP/1.0" 200 2321
+[07/Jun/2016 18:20:09]"GET /static/myjs/jquery.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:09]"GET /static/myjs/login.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:09]"GET /static/css/login2.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:14]"GET / HTTP/1.0" 302 0
+[07/Jun/2016 18:20:14]"GET /accounts/login/?next=/ HTTP/1.0" 200 2321
+[07/Jun/2016 18:20:19]"POST /accounts/login/?next=/ HTTP/1.0" 302 0
+[07/Jun/2016 18:20:19]"GET / HTTP/1.0" 200 2822
+[07/Jun/2016 18:20:19]"GET /static/myjs/common.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/css/jquery.dataTables.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/myjs/zDialog.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/myjs/jquery.layout.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/myjs/picdata/WdatePicker.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/myjs/jquery.dataTables.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:19]"GET /static/myjs/picdata/skin/WdatePicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/My97DatePicker.htm HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/calendar.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/config.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/lang/zh-cn.js HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/skin/default/datepicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:20]"GET /static/myjs/picdata/skin/whyGreen/datepicker.css HTTP/1.0" 304 0
+[07/Jun/2016 18:20:21]"GET /UserMgr HTTP/1.0" 200 4297
+[07/Jun/2016 18:20:23]"GET /PasswordMan HTTP/1.0" 200 2724
+[07/Jun/2016 18:20:24]"GET /DeviceMaintain HTTP/1.0" 200 5547
+[07/Jun/2016 18:20:31]"GET /MyDevice HTTP/1.0" 200 4288
+[07/Jun/2016 18:20:34]"GET /LogView HTTP/1.0" 200 3680
+[07/Jun/2016 18:20:38]"GET /SimInfo HTTP/1.0" 200 4275
+[07/Jun/2016 18:20:40]"GET /UserMgr HTTP/1.0" 200 4297
+[07/Jun/2016 18:21:41]"GET /UserMgr HTTP/1.0" 200 4297
