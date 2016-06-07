@@ -1,0 +1,33 @@
+需要安装包：
+django、MySQLdb(如果使用Mysql数据库)、django-pagination
+
+安装步骤：
+1、创建数据库和适当的用户，在PhoneMgr/settings.py中配置发件邮箱和数据库连接信息
+
+2、运行python manager.py syncdb 生成模型
+
+3、以管理员用户登录后台：http://192.168.88.222:8099/admin 在main menu添加菜单，包括：
+用户管理  /UserMgr  对应的访问权限，如：3.1_访问用户管理菜单
+设备维护 /DeviceMaintain
+sim卡管理 /SimInfo
+日志管理 /LogView
+我的设备 /MyDevice
+
+4、建立两个用户组：
+admins  可以访问除我的设备的所有权限(只添加PhoneMgr - my auth all的权限)
+users 可以访问除用户管理的所有用户权限
+
+5、使用管理员用户(在生成模型时简历的管理员用户)进入主界面，创建用户
+myadmin  - admins组
+myuser  - users组
+
+6、使用管理员用户进入管理后台初始化一些基本的数据
+包括：
+运营商
+内存
+系统
+系统版本
+厂商
+分辨率
+屏幕尺寸
+SIM卡信息
