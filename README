@@ -17,7 +17,7 @@ sim卡管理 /SimInfo
 admins  可以访问除我的设备的所有权限(只添加PhoneMgr - my auth all的权限)
 users 可以访问除用户管理的所有用户权限
 
-5、使用管理员用户(在生成模型时简历的管理员用户)进入主界面，创建用户
+5、使用管理员用户(在生成模型时建立的管理员用户)进入主界面，创建用户
 myadmin  - admins组
 myuser  - users组
 
